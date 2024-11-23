@@ -24,6 +24,12 @@ const getAllBooksDB = async (searchTerm: string | undefined) => {
   return result;
  }
 
+ // get specific books ID 
+ const getSingleBookDB = async (id: string) => {
+  const result = await ProductModel.findById(id);
+  return result
+ }
+
 
 
 
@@ -31,4 +37,5 @@ const getAllBooksDB = async (searchTerm: string | undefined) => {
 export const ProductService = {
   createProductDB,
   getAllBooksDB,
+  getSingleBookDB,
 }

@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import { ProductService } from "./product.service";
 
 
@@ -43,7 +43,30 @@ const getAllbooks = async (req: Request, res: Response) => {
   }  
 };
 
+// get special book id
+const getSingleBook = async (req: Request, res: Response)=> {
+  try{
+    const {productId} = req.params;
+    
+    const result = await ProductService.getSingleBookDB(productId);
+    
+    // response 
+    res.status(200).json({
+      message: 'Book retrieved successfully',
+      status: true,
+      data: result,
+  })
+} catch (err: any) {
+  res.status(404).json({
+      status: false,
+      message: 'Failed to retrieved Book',
+      error: err,
+  })
+} 
+}
+
 export const ProductController = {
   createProduct,
   getAllbooks,
+  getSingleBook
 }

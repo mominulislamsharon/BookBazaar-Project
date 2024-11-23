@@ -11,9 +11,6 @@ app.use(cors());
 // booke create routes 
 app.use('/api/products',ProductRoutes)
 
-// // getall books search 
-// app.use("/api/products", ProductRoutes);
-
 
 // routes
 app.get('/', (req: Request, res: Response) => {
