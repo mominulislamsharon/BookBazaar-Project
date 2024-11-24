@@ -1,27 +1,38 @@
 import { Request, Response } from 'express';
 import { ProductService } from './product.service';
 
-const createProduct = async (req: Request, res: Response) => {
+const createProduct = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { productdata } = await req.body;
+    const { productdata } = req.body;
 
     const result = await ProductService.createProductDB(productdata);
 
     // response
-
-    res.status(200).json({
+     res.status(200).json({
       message: 'Book created successfully',
       status: true,
       data: result,
     });
   } catch (err: any) {
-    res.status(404).json({
+    if (err.name === 'ValidationError') {
+     res.status(400).json({
+        message: 'Validation failed',
+        success: false,
+        error: {
+          name: err.name,
+          errors: err.errors, 
+        },
+        stack: err.stack || 'No stack trace available',
+      });
+    }
+    res.status(500).json({
       status: false,
-      message: 'Failed to create Book',
-      error: err,
+      message: 'Failed to create Product',
+      error: err.stack || 'No stack trace available',
     });
   }
 };
+
 
 // getAllbooks
 const getAllbooks = async (req: Request, res: Response) => {
@@ -39,7 +50,7 @@ const getAllbooks = async (req: Request, res: Response) => {
     res.status(404).json({
       status: false,
       message: 'sorry search term a book was not found',
-      error: err,
+      stack: err.stack || 'No stack trace available',
     });
   }
 };
@@ -61,7 +72,7 @@ const getSingleBook = async (req: Request, res: Response) => {
     res.status(404).json({
       status: false,
       message: 'Failed to retrieved Book',
-      error: err,
+      stack: err.stack || 'No stack trace available',
     });
   }
 };
@@ -105,7 +116,7 @@ const deleteBook = async (req: Request, res: Response) => {
     res.status(404).json({
       status: false,
       message: 'Failed to delete Book',
-      error: err,
+      stack: err.stack || 'No stack trace available',
     });
   }
 };

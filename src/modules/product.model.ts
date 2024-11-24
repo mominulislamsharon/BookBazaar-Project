@@ -1,9 +1,11 @@
-import { Schema, model, connect } from 'mongoose';
+import { Schema, model} from 'mongoose';
 import { Category, IProduct } from './Bookshop/product.interface';
 
 const productSchema = new Schema<IProduct<Category>>(
   {
-    title: { type: String, required: true },
+    title: { type: String, required: [true, 
+      'please title name properly'
+      ] },
     author: { type: String, required: true },
     price: { type: Number, required: true, min: 0 },
     category: {

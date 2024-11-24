@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import { ProductRoutes } from './modules/Bookshop/product.route';
 import router from './modules/BookOrder/order.route';
+import { orderController } from './modules/BookOrder/order.controller';
 const app = express();
 
 // middleware parser
@@ -13,6 +14,9 @@ app.use('/api/products', ProductRoutes);
 
 // order routes
 app.use("/api/orders", router);
+
+// order revenue routes
+app.get('/api/orders/revenue', orderController.calculateRevenue);
 
 // routes
 app.get('/', (req: Request, res: Response) => {
