@@ -1,6 +1,11 @@
-export type Category = 'Fiction' | 'Science' | 'SelfDevelopment' | 'Poetry' | 'Religious';
+export type Category =
+  | 'Fiction'
+  | 'Science'
+  | 'SelfDevelopment'
+  | 'Poetry'
+  | 'Religious';
 
-export type IProduct<Category extends string> ={
+export type IProduct<Category extends string> = {
   title: string;
   author: string;
   price: number;
@@ -8,6 +13,4 @@ export type IProduct<Category extends string> ={
   description: string;
   quantity: number;
   inStock: boolean;
-}
-
-
+};
