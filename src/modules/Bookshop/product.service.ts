@@ -30,12 +30,32 @@ const getAllBooksDB = async (searchTerm: string | undefined) => {
   return result
  }
 
+ // update a book
 
+const updateBookDB = async (id: string, updateData: Partial<IProduct<Category>>) => {
+  try{
+    const result = await ProductModel.findByIdAndUpdate(
+      id.trim(),
+      updateData,
+      { new: true } 
+    );
+    return result;
+  }catch{
+    throw new Error("Invalid product ID.");
+  }
+}
 
+// delete a book
+ const deletBookDB = async (id: string) => {
+  const result = await ProductModel.findByIdAndDelete(id);
+  return result
+ }
 
 
 export const ProductService = {
   createProductDB,
   getAllBooksDB,
   getSingleBookDB,
+  updateBookDB,
+  deletBookDB,
 }

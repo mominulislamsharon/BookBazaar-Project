@@ -37,10 +37,13 @@ const getAllbooks = async (req: Request, res: Response) => {
       status: true,
       data: result,
   })
-} catch (err) {
-  console.log(err);
-    
-  }  
+} catch (err: any) {
+  res.status(404).json({
+      status: false,
+      message: 'sorry search term a book was not found',
+      error: err,
+  })
+}    
 };
 
 // get special book id
@@ -65,8 +68,55 @@ const getSingleBook = async (req: Request, res: Response)=> {
 } 
 }
 
+// update book
+
+const updateBook = async (req: Request, res: Response) => {
+  try {
+    const productId = req.params.productId.trim();
+    const body = req.body;
+    const result = await ProductService.updateBookDB(productId,body);
+    
+    // response 
+    res.status(200).json({
+      message: 'Book updated successfully',
+      status: true,
+      data: result,
+  })
+} catch (err: any) {
+  res.status(404).json({
+      status: false,
+      message: 'Failed to update Book',
+      error: err.message || err,
+  })
+}   
+}
+
+// delete book 
+const deleteBook = async (req: Request, res: Response) => {
+  try {
+    const productId = req.params.productId;
+    const result = await ProductService.deletBookDB(productId);
+    
+    // response 
+    res.status(200).json({
+      message: 'Book deleted successfully',
+      status: true,
+      data: {},
+  })
+} catch (err: any) {
+  res.status(404).json({
+      status: false,
+      message: 'Failed to delete Book',
+      error: err,
+  })
+}   
+}
+
+
 export const ProductController = {
   createProduct,
   getAllbooks,
-  getSingleBook
+  getSingleBook,
+  updateBook,
+  deleteBook,
 }

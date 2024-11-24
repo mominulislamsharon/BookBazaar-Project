@@ -7,8 +7,6 @@ async function server() {
         // mongodb database connection uri
         await mongoose.connect(config.database_url as string)
 
-
-        
         // server running on
         app.listen(config.port, () => {
             console.log(`Bookshop Running ${config.port}`)
@@ -18,4 +16,4 @@ async function server() {
     }
 }
 
-server()
+server();
