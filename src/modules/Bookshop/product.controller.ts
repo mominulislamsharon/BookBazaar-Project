@@ -3,7 +3,7 @@ import { ProductService } from './product.service';
 
 const createProduct = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { productdata } = req.body;
+    const  productdata  = req.body;
 
     const result = await ProductService.createProductDB(productdata);
 
@@ -110,7 +110,7 @@ const deleteBook = async (req: Request, res: Response) => {
     res.status(200).json({
       message: 'Book deleted successfully',
       status: true,
-      data: {},
+      data: result,
     });
   } catch (err: any) {
     res.status(404).json({
