@@ -1,8 +1,8 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
-import { ProductRoutes } from './modules/Bookshop/product.route';
 import router from './modules/BookOrder/order.route';
 import { orderController } from './modules/BookOrder/order.controller';
+import { ProductRoutes } from './modules/BookProduct/product.route';
 const app = express();
 
 // middleware parser
