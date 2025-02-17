@@ -1,6 +1,6 @@
-import OrderModel from '../order.modelt';
-import { ProductModel } from '../product.model';
+import { ProductModel } from '../BookProduct/product.model';
 import { IOrder } from './order.interface';
+import OrderModel from './order.model';
 
 // create an order
 const createOrderDB = async (receivedOrder: IOrder) => {

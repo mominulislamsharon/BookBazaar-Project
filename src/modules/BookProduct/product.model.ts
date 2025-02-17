@@ -1,5 +1,5 @@
 import { Schema, model} from 'mongoose';
-import { Category, IProduct } from './Bookshop/product.interface';
+import { Category, IProduct } from './product.interface';
 
 const productSchema = new Schema<IProduct<Category>>(
   {

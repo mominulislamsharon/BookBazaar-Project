@@ -1,5 +1,5 @@
-import { ProductModel } from '../product.model';
 import { Category, IProduct } from './product.interface';
+import { ProductModel } from './product.model';
 
 // crate a book
 const createProductDB = async (product: IProduct<Category>) => {

@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import config from '../../config';
-// import { IUser } from '../User/user.interface';
-// import { User } from '../User/user.model';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { User } from '../User/user.model';
+import { IUser } from '../User/user.interface';
+import config from '../../config';
 
 const register = async (payload: IUser) => {
   const result = await User.create(payload);
@@ -18,12 +18,6 @@ const login = async (payload: { email: string; password: string }) => {
   if (!user) {
     throw 'Invalid credentials';
   }
-
-  // const isBlocked = user?.isBlocked;
-
-  // if (isBlocked === true) {
-  //   throw 'User is blocked';
-  // }
 
   const isPasswordValid = await bcrypt.compare(
     payload?.password,

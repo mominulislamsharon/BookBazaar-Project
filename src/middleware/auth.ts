@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import catchAsync from '../utils/catchAsync';
 import { NextFunction, Request, Response } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import config from '../config';
-import { User } from '../module/User/user.model';
+import catchAsync from '../Utils/catchAsync';
+import { User } from '../modules/User/user.model';
 
 const auth = (...requiredRole: string[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
@@ -15,10 +15,12 @@ const auth = (...requiredRole: string[]) => {
       throw new Error('Your are not authorized');
     }
 
-    let decoded: JwtPayload;
+    let decoded: JwtPayload & { id: string };
     try {
       // Verify the token
-      decoded = jwt.verify(token, config.jwt_secret as string) as JwtPayload;
+      decoded = jwt.verify(token, config.jwt_secret as string) as JwtPayload & {
+        id: string;
+      };
     } catch (error) {
       throw new Error('Invalid token');
     }
@@ -28,10 +30,6 @@ const auth = (...requiredRole: string[]) => {
     const user = await User.findOne({ email });
     if (!user) {
       throw new Error('User not found');
-    }
-
-    if (user.isBlocked) {
-      throw new Error('Your account is blocked');
     }
 
     // Check the role
