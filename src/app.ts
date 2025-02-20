@@ -1,31 +1,19 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
-import router from './modules/BookOrder/order.route';
-import { orderController } from './modules/BookOrder/order.controller';
-import { ProductRoutes } from './modules/BookProduct/product.route';
 import notFound from './middleware/notFound';
 import { globalErrorHandler } from './middleware/globalErrorHandler';
-import { authRouters } from './modules/Auth-User/auth.route';
-import { userRoutes } from './modules/User/usre.route';
+import cookieParser from 'cookie-parser';
+import router from './modules/routes';
 
 const app = express();
+app.use(cookieParser())
 
 // middleware parser
 app.use(express.json());
 app.use(cors());
 
-// booke create routes
-app.use('/api/products', ProductRoutes);
-
-// order routes
-app.use("/api/orders", router);
-
-// order revenue routes
-app.get('/api/orders/revenue', orderController.calculateRevenue);
-
 ////
-app.use('/api/users', userRoutes);
-app.use('/api/auth', authRouters)
+app.use('/api', router)
 
 // routes
 app.get('/', (req: Request, res: Response) => {

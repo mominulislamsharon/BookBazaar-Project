@@ -4,18 +4,42 @@ import OrderModel from './order.model';
 
 // create an order
 const createOrderDB = async (receivedOrder: IOrder) => {
-  const { product, quantity, email } = receivedOrder;
+  const productDetails = await ProductModel.findById(receivedOrder.product);
 
-  const productDetails = await ProductModel.findById(product);
   if (!productDetails) throw new Error('Product not found');
-  if (productDetails.quantity < quantity) throw new Error('Insufficient stock');
 
-  productDetails.quantity -= quantity;
+  if (productDetails.quantity < receivedOrder.quantity)
+    throw new Error('Insufficient stock');
+
+  productDetails.quantity -= receivedOrder.quantity;
   productDetails.inStock = productDetails.quantity > 0;
   await productDetails.save();
 
-  const totalPrice = productDetails.price * quantity;
-  return await new OrderModel({ email, product, quantity, totalPrice }).save();
+  receivedOrder. totalPrice = productDetails.price * receivedOrder.quantity;
+   
+  receivedOrder.status = 'Pending';
+
+  return await new OrderModel(receivedOrder).save();
+};
+
+const getAllOrders = async () => {
+  const result = await OrderModel.find({}).populate('product');
+  return result;
+};
+
+const getSingleOrder = async (id: string) => {
+  const result = await OrderModel.findById(id).populate('product');
+  return result;
+};
+
+const updateOrder = async (id: string, payload: Partial<IOrder>) => {
+  const result = await OrderModel.findByIdAndUpdate(id, payload, { new: true }).populate('product');
+  return result;
+};
+
+const deleteOrder = async (id: string) => {
+  const result = await OrderModel.findByIdAndDelete(id);
+  return result;
 };
 
 // calculateRevenue
@@ -35,5 +59,9 @@ const calculateRevenueDB = async () => {
 
 export const orderService = {
   createOrderDB,
+  getAllOrders,
+  getSingleOrder,
+  updateOrder,
+  deleteOrder,
   calculateRevenueDB,
 };

@@ -1,13 +1,13 @@
 import { Category, IProduct } from './product.interface';
 import { ProductModel } from './product.model';
 
-// crate a book
+// crate a Product
 const createProductDB = async (product: IProduct<Category>) => {
   const result = await ProductModel.create(product);
   return result;
 };
 
-// get all books
+// get all Product
 const getAllBooksDB = async (searchTerm: string | undefined) => {
   if (searchTerm) {
     const result = await ProductModel.find({
@@ -23,13 +23,13 @@ const getAllBooksDB = async (searchTerm: string | undefined) => {
   return result;
 };
 
-// get specific books ID
+
 const getSingleBookDB = async (id: string) => {
   const result = await ProductModel.findById(id);
   return result;
 };
 
-// update a book
+// update a Product
 
 const updateBookDB = async (
   id: string,
@@ -45,7 +45,7 @@ const updateBookDB = async (
   }
 };
 
-// delete a book
+// delete a Product
 const deletBookDB = async (id: string) => {
   const result = await ProductModel.findByIdAndDelete(id);
   return result;

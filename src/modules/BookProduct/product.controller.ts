@@ -1,125 +1,81 @@
 import { Request, Response } from 'express';
 import { ProductService } from './product.service';
+import catchAsync from '../../Utils/catchAsync';
+import sendResponse from '../../Utils/sendResponse';
+import { StatusCodes } from 'http-status-codes';
 
-const createProduct = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const  productdata  = req.body;
+const createProduct = catchAsync(async (req: Request, res: Response): Promise<void> => {
 
-    const result = await ProductService.createProductDB(productdata);
+  const  productdata  = req.body;
 
-    // response
-     res.status(200).json({
-      message: 'Book created successfully',
-      status: true,
-      data: result,
-    });
-  } catch (err: any) {
-    if (err.name === 'ValidationError') {
-     res.status(400).json({
-        message: 'Validation failed',
-        success: false,
-        error: {
-          name: err.name,
-          errors: err.errors, 
-        },
-        stack: err.stack || 'No stack trace available',
-      });
-    }
-    res.status(500).json({
-      status: false,
-      message: 'Failed to create Product',
-      error: err.stack || 'No stack trace available',
-    });
-  }
-};
+  const result = await ProductService.createProductDB(productdata);
+
+  sendResponse(res, {
+    message: 'Book created successfully',
+    status: true,
+    statusCode: StatusCodes.CREATED,
+    data: result,
+  })
+});
 
 
 // getAllbooks
-const getAllbooks = async (req: Request, res: Response) => {
-  try {
+const getAllbooks = catchAsync(async (req: Request, res: Response) => {
     const searchTerm = req.query.searchTerm as string | undefined;
 
     const result = await ProductService.getAllBooksDB(searchTerm);
 
-    res.status(200).json({
-      message: 'Book retrieved successfully',
+    sendResponse(res, {
+      message: 'Books retrieved successfully',
       status: true,
+      statusCode: StatusCodes.OK,
       data: result,
-    });
-  } catch (err: any) {
-    res.status(404).json({
-      status: false,
-      message: 'sorry search term a book was not found',
-      stack: err.stack || 'No stack trace available',
-    });
-  }
-};
+    })
+});
 
 // get special book id
-const getSingleBook = async (req: Request, res: Response) => {
-  try {
-    const { productId } = req.params;
+const getSingleBook = catchAsync(async (req: Request, res: Response) => {
+ 
+  const { productId } = req.params;
 
-    const result = await ProductService.getSingleBookDB(productId);
+  const result = await ProductService.getSingleBookDB(productId);
 
-    // response
-    res.status(200).json({
-      message: 'Book retrieved successfully',
-      status: true,
-      data: result,
-    });
-  } catch (err: any) {
-    res.status(404).json({
-      status: false,
-      message: 'Failed to retrieved Book',
-      stack: err.stack || 'No stack trace available',
-    });
-  }
-};
+  sendResponse(res ,{
+    message: 'Book retrieved successfully',
+    status: true,
+    statusCode: StatusCodes.OK,
+    data: result,
+  })
+});
 
 // update book
 
-const updateBook = async (req: Request, res: Response) => {
-  try {
-    const productId = req.params.productId.trim();
-    const body = req.body;
-    const result = await ProductService.updateBookDB(productId, body);
+const updateBook = catchAsync(async (req: Request, res: Response) => {
+  const productId = req.params.productId.trim();
+  const body = req.body;
+  const result = await ProductService.updateBookDB(productId, body);
 
-    // response
-    res.status(200).json({
-      message: 'Book updated successfully',
-      status: true,
-      data: result,
-    });
-  } catch (err: any) {
-    res.status(404).json({
-      status: false,
-      message: 'Failed to update Book',
-      error: err.message || err,
-    });
-  }
-};
+  sendResponse(res, {
+    message: 'Book updated successfully',
+    status: true,
+    statusCode: StatusCodes.OK,
+    data: result,
+  })
+});
 
 // delete book
-const deleteBook = async (req: Request, res: Response) => {
-  try {
-    const productId = req.params.productId;
-    const result = await ProductService.deletBookDB(productId);
+const deleteBook = catchAsync(async (req: Request, res: Response) => {
+ 
+  const productId = req.params.productId;
+  const result = await ProductService.deletBookDB(productId);
 
-    // response
-    res.status(200).json({
-      message: 'Book deleted successfully',
-      status: true,
-      data: result,
-    });
-  } catch (err: any) {
-    res.status(404).json({
-      status: false,
-      message: 'Failed to delete Book',
-      stack: err.stack || 'No stack trace available',
-    });
-  }
-};
+  sendResponse(res, {
+    message: 'Book deleted successfully',
+    status: true,
+    statusCode: StatusCodes.OK,
+    data: result,
+  })
+});
 
 export const ProductController = {
   createProduct,

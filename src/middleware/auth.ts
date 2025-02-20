@@ -15,7 +15,7 @@ const auth = (...requiredRole: string[]) => {
       throw new Error('Your are not authorized');
     }
 
-    let decoded: JwtPayload & { id: string };
+    let decoded: JwtPayload;
     try {
       // Verify the token
       decoded = jwt.verify(token, config.jwt_secret as string) as JwtPayload & {

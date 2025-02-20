@@ -23,6 +23,6 @@ const productSchema = new Schema<IProduct<Category>>(
 );
 
 export const ProductModel = model<IProduct<Category>>(
-  'IProduct',
+  'Product',
   productSchema,
 );
